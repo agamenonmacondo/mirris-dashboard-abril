@@ -3,261 +3,411 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIRRIS — Performance Abril 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>MIRRIS by A&K — Abril 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0A0A0F;
-  --surface: #12121A;
-  --surface2: #1A1A26;
-  --border: #2A2A3A;
-  --text: #F0F0F5;
-  --text2: #8888A0;
-  --accent: #FF6B35;
-  --accent2: #3B9AFF;
-  --green: #22C55E;
-  --red: #EF4444;
-  --yellow: #FBBF24;
+  --madera: #3E2723;
+  --borgona: #6B2737;
+  --cal: #F5EDE0;
+  --oliva: #5C7A4D;
+  --ambar: #D4922A;
+  --negro: #1E1E1E;
+  --dorado: #C9A94E;
+  --terracota: #A0522D;
+  --cal-dark: #EDE5D5;
+  --borgona-light: #8B3A4A;
+  --oliva-light: rgba(92,122,77,0.12);
+  --ambar-light: rgba(212,146,42,0.12);
+  --borgona-lighter: rgba(107,39,55,0.08);
   --radius: 12px;
+  --spring: cubic-bezier(0.23, 1, 0.32, 1);
 }
+
 * { margin:0; padding:0; box-sizing:border-box; }
+
 body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cal);
+  color: var(--madera);
   min-height: 100vh;
   overflow-x: hidden;
+  background-image: 
+    radial-gradient(ellipse 800px 500px at 15% 20%, rgba(107,39,55,0.04), transparent),
+    radial-gradient(ellipse 600px 400px at 85% 70%, rgba(212,146,42,0.05), transparent);
 }
-.mono { font-family: 'JetBrains Mono', monospace; }
 
-/* Animated gradient bg */
-.bg-glow {
+/* Decorative hand-drawn line */
+.hand-line {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: 
-    radial-gradient(ellipse 600px 400px at 20% 10%, rgba(255,107,53,0.08), transparent),
-    radial-gradient(ellipse 500px 300px at 80% 80%, rgba(59,154,255,0.06), transparent);
-  pointer-events: none; z-index: 0;
-  animation: glowPulse 8s ease-in-out infinite alternate;
-}
-@keyframes glowPulse {
-  0% { opacity: 0.7; }
-  100% { opacity: 1; }
+  pointer-events: none; z-index: 0; opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 100c30-20 60 20 90 0s60 20 90 0' stroke='%236B2737' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
 }
 
 .container {
-  max-width: 1200px; margin: 0 auto; padding: 24px 20px;
+  max-width: 1180px; margin: 0 auto; padding: 40px 24px;
   position: relative; z-index: 1;
 }
 
-/* Header */
+/* Header - Asymmetric, editorial */
 .header {
-  text-align: center; margin-bottom: 40px;
-  animation: fadeInDown 0.6s ease-out;
+  margin-bottom: 48px;
+  animation: slideIn 0.8s var(--spring) both;
+  position: relative;
+}
+.header::after {
+  content: '';
+  position: absolute; bottom: -16px; left: 0;
+  width: 120px; height: 3px;
+  background: var(--borgona);
+  border-radius: 2px;
 }
 .header h1 {
-  font-size: 2.2rem; font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), #FF9F6B);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; letter-spacing: -0.5px;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem; font-weight: 900;
+  color: var(--madera);
+  letter-spacing: -1px; line-height: 1;
+}
+.header h1 span {
+  color: var(--borgona);
 }
 .header .subtitle {
-  font-size: 1.1rem; color: var(--text2); margin-top: 6px; font-weight: 400;
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem; color: var(--terracota);
+  margin-top: 6px; font-weight: 500;
 }
-.header .accent-bar {
-  width: 60px; height: 4px; background: var(--accent);
-  border-radius: 2px; margin: 12px auto 0;
+.header .date-range {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; color: var(--ambar);
+  font-weight: 600; margin-top: 4px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+/* Editorial divider */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 36px 0 28px;
+}
+.divider::before {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--borgona), transparent);
+}
+.divider-label {
+  font-family: 'Caveat', cursive;
+  font-size: 1.2rem; color: var(--borgona);
+  font-weight: 600; white-space: nowrap;
+}
+.divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(270deg, var(--dorado), transparent);
 }
 
 /* Cards */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.6);
+  border: 1px solid rgba(62,39,35,0.08);
   border-radius: var(--radius);
   padding: 24px;
-  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-  animation: cardIn 0.6s ease-out both;
+  backdrop-filter: blur(8px);
+  transition: transform 0.4s var(--spring), box-shadow 0.4s var(--spring);
+  animation: cardReveal 0.7s var(--spring) both;
 }
 .card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255,107,53,0.3);
-  box-shadow: 0 8px 30px rgba(255,107,53,0.08);
+  transform: translateY(-3px) scale(1.005);
+  box-shadow: 0 12px 40px rgba(62,39,35,0.08);
+  border-color: rgba(107,39,55,0.15);
 }
 
-/* KPI Grid */
+/* KPI Grid - Asymmetric layout */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px; margin-bottom: 32px;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px; margin-bottom: 0;
 }
 .kpi-card {
   position: relative; overflow: hidden;
+  padding: 28px 24px;
 }
+.kpi-card.hero { grid-column: span 5; }
+.kpi-card.std { grid-column: span 3; }
+.kpi-card.wide { grid-column: span 4; }
+.kpi-card.narrow { grid-column: span 2; }
+
+@media (max-width: 900px) {
+  .kpi-card.hero, .kpi-card.std, .kpi-card.wide, .kpi-card.narrow {
+    grid-column: span 6;
+  }
+}
+@media (max-width: 600px) {
+  .kpi-card.hero, .kpi-card.std, .kpi-card.wide, .kpi-card.narrow {
+    grid-column: span 12;
+  }
+}
+
 .kpi-card::before {
   content: ''; position: absolute; left: 0; top: 0;
   width: 4px; height: 100%; border-radius: 4px 0 0 4px;
 }
-.kpi-card.orange::before { background: var(--accent); }
-.kpi-card.blue::before { background: var(--accent2); }
-.kpi-card.green::before { background: var(--green); }
-.kpi-card.yellow::before { background: var(--yellow); }
+.kpi-card.borgona::before { background: var(--borgona); }
+.kpi-card.ambar::before { background: var(--ambar); }
+.kpi-card.oliva::before { background: var(--oliva); }
+.kpi-card.dorado::before { background: var(--dorado); }
+.kpi-card.terracota::before { background: var(--terracota); }
 
-.kpi-label { font-size: 0.8rem; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding-left: 12px; }
-.kpi-value { font-size: 2rem; font-weight: 800; padding-left: 12px; line-height: 1.1; }
-.kpi-delta { display: inline-flex; align-items: center; gap: 4px; font-size: 0.78rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; margin: 8px 0 0 12px; }
-.kpi-delta.up { background: rgba(34,197,94,0.12); color: var(--green); }
-.kpi-delta.down { background: rgba(239,68,68,0.12); color: var(--red); }
+.kpi-label {
+  font-size: 0.72rem; color: rgba(62,39,35,0.5);
+  font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 10px; padding-left: 16px;
+}
+.kpi-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem; font-weight: 800;
+  padding-left: 16px; line-height: 1;
+  color: var(--madera);
+}
+.kpi-card.hero .kpi-value { font-size: 3rem; }
+.kpi-delta {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.75rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  margin: 10px 0 0 16px;
+}
+.kpi-delta.up { background: var(--oliva-light); color: var(--oliva); }
+.kpi-delta.down { background: var(--ambar-light); color: var(--ambar); }
+.kpi-delta.neutral { background: var(--borgona-lighter); color: var(--borgona); }
+
+.kpi-note {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem; color: var(--terracota);
+  margin: 6px 0 0 16px;
+}
 
 /* Section */
-.section { margin-bottom: 36px; animation: cardIn 0.6s ease-out both; }
-.section-title {
-  font-size: 1.15rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+.section {
+  margin-bottom: 0;
+  animation: cardReveal 0.7s var(--spring) both;
 }
-.section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700;
+  color: var(--madera);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title .accent { 
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--borgona);
+}
 
-/* Two column */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+/* Two column asymmetric */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: 16px;
+}
 @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
 
-/* Daily chart */
-.chart-container { position: relative; width: 100%; }
-.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-.bar-day { width: 40px; font-size: 0.72rem; color: var(--text2); text-align: right; flex-shrink: 0; }
-.bar-track { flex: 1; height: 22px; background: var(--surface2); border-radius: 4px; overflow: hidden; position: relative; }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 1.2s cubic-bezier(0.25,1,0.5,1); width: 0; display: flex; align-items: center; }
-.bar-fill .bar-val { font-size: 0.68rem; font-weight: 600; padding: 0 6px; white-space: nowrap; color: var(--bg); }
-
-/* Product table */
+/* Product Table */
 .product-table { width: 100%; border-collapse: collapse; }
 .product-table th {
-  font-size: 0.72rem; color: var(--text2); font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border);
+  font-size: 0.7rem; color: rgba(62,39,35,0.45);
+  font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; padding: 12px 10px;
+  text-align: left; border-bottom: 2px solid rgba(62,39,35,0.1);
 }
 .product-table td {
-  padding: 10px 12px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding: 12px 10px; font-size: 0.85rem;
+  border-bottom: 1px solid rgba(62,39,35,0.05);
+  vertical-align: middle;
 }
-.product-table tr:hover td { background: rgba(255,107,53,0.04); }
-.margin-bar { display: inline-block; height: 6px; border-radius: 3px; min-width: 20px; }
+.product-table tr {
+  transition: background 0.2s;
+}
+.product-table tr:hover td {
+  background: rgba(107,39,55,0.03);
+}
+
+.margin-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.margin-pill.high { background: var(--oliva-light); color: var(--oliva); }
+.margin-pill.mid { background: var(--ambar-light); color: var(--ambar); }
+.margin-pill.low { background: rgba(107,39,55,0.08); color: var(--borgona); }
+
+/* Daily chart - editorial style */
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.bar-day {
+  width: 36px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem; color: rgba(62,39,35,0.45);
+  text-align: right; flex-shrink: 0; font-weight: 500;
+}
+.bar-track {
+  flex: 1; height: 20px;
+  background: rgba(62,39,35,0.04);
+  border-radius: 4px; overflow: hidden;
+}
+.bar-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 1.2s var(--spring);
+  width: 0; display: flex; align-items: center;
+}
+.bar-fill .bar-val {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem; font-weight: 600;
+  padding: 0 6px; white-space: nowrap;
+}
 
 /* Donut */
 .donut-container { display: flex; flex-direction: column; align-items: center; }
-.donut-svg { width: 200px; height: 200px; }
-.donut-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; justify-content: center; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; }
+.donut-svg { width: 180px; height: 180px; }
+.donut-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; justify-content: center; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.78rem; font-weight: 500; }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-/* Animations */
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-16px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Revenue vs Cost stacked bar */
+.revcost-bar {
+  margin-bottom: 16px;
 }
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.revcost-name {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 4px;
+}
+.revcost-name span:first-child { font-size: 0.82rem; font-weight: 600; }
+.revcost-name span:last-child { font-family: 'Caveat', cursive; font-size: 1.05rem; font-weight: 600; }
+.revcost-track {
+  display: flex; height: 22px; border-radius: 4px; overflow: hidden;
 }
 
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
-.delay-5 { animation-delay: 0.5s; }
-.delay-6 { animation-delay: 0.6s; }
+/* Spring Animations */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(28px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.delay-1 { animation-delay: 80ms; }
+.delay-2 { animation-delay: 160ms; }
+.delay-3 { animation-delay: 240ms; }
+.delay-4 { animation-delay: 320ms; }
+.delay-5 { animation-delay: 400ms; }
+.delay-6 { animation-delay: 480ms; }
+.delay-7 { animation-delay: 560ms; }
+
+/* Footer */
+.footer {
+  text-align: center; margin-top: 48px; padding-top: 24px;
+  border-top: 1px solid rgba(62,39,35,0.08);
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem; color: rgba(62,39,35,0.35);
+}
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-track { background: var(--cal); }
+::-webkit-scrollbar-thumb { background: var(--dorado); border-radius: 3px; }
 
 /* Responsive */
 @media (max-width: 480px) {
-  .kpi-value { font-size: 1.5rem; }
-  .header h1 { font-size: 1.6rem; }
-  .container { padding: 16px 12px; }
+  .kpi-value { font-size: 1.8rem; }
+  .kpi-card.hero .kpi-value { font-size: 2.2rem; }
+  .header h1 { font-size: 2rem; }
+  .container { padding: 24px 16px; }
 }
 </style>
 </head>
 <body>
-<div class="bg-glow"></div>
+<div class="hand-line"></div>
 <div class="container">
 
-<!-- Header -->
+<!-- Header - Asymmetric editorial -->
 <div class="header">
-  <h1>MIRRIS by Attic & Keller</h1>
+  <h1>MIRRIS <span>by</span> Attick & Keller</h1>
   <div class="subtitle">Performance Abril 2026</div>
-  <div class="accent-bar"></div>
+  <div class="date-range">01 abr — 30 abr</div>
 </div>
 
-<!-- KPI Cards -->
+<!-- KPI Principal - Asymmetric grid -->
 <div class="kpi-grid">
-  <div class="card kpi-card orange delay-1">
-    <div class="kpi-label">Clientes</div>
-    <div class="kpi-value mono" data-count="9701">0</div>
-    <div class="kpi-delta up">+32.5% vs Mar</div>
-  </div>
-  <div class="card kpi-card blue delay-2">
-    <div class="kpi-label">Tiquete Promedio</div>
-    <div class="kpi-value mono" data-count="281629" data-prefix="$" data-format="money">0</div>
-    <div class="kpi-delta down">-1.2% vs Mar</div>
-  </div>
-  <div class="card kpi-card green delay-3">
+  <div class="card kpi-card hero borgona delay-1">
     <div class="kpi-label">Venta Bruta</div>
-    <div class="kpi-value mono" data-count="2732084472" data-prefix="$" data-format="money">0</div>
-    <div class="kpi-delta up">+13.8% vs Mar</div>
+    <div class="kpi-value" data-count="2732084472" data-format="money">0</div>
+    <div class="kpi-delta up">+13.8% vs marzo</div>
+    <div class="kpi-note">El mes mas fuerte del trimestre</div>
   </div>
-  <div class="card kpi-card yellow delay-4">
-    <div class="kpi-label">Margen Prom.</div>
-    <div class="kpi-value mono" data-count="74" data-suffix="%">0</div>
-    <div class="kpi-delta up">Saludable</div>
+  <div class="card kpi-card std ambar delay-2">
+    <div class="kpi-label">Clientes</div>
+    <div class="kpi-value" data-count="9701">0</div>
+    <div class="kpi-delta up">+32.5%</div>
+  </div>
+  <div class="card kpi-card std dorado delay-3">
+    <div class="kpi-label">Tiquete Prom.</div>
+    <div class="kpi-value" data-count="281629" data-format="money">0</div>
+    <div class="kpi-delta down">-1.2%</div>
+  </div>
+  <div class="card kpi-card std oliva delay-4">
+    <div class="kpi-label">Margen</div>
+    <div class="kpi-value" data-count="74" data-suffix="%">0</div>
+    <div class="kpi-delta neutral">Saludable</div>
   </div>
 </div>
 
-<!-- Food vs Drinks split -->
-<div class="kpi-grid">
-  <div class="card kpi-card orange delay-2">
-    <div class="kpi-label">Food Revenue</div>
-    <div class="kpi-value mono" data-count="991207185" data-prefix="$" data-format="money">0</div>
-    <div class="kpi-delta" style="background:rgba(255,107,53,0.12);color:var(--accent);">36.3%</div>
-  </div>
-  <div class="card kpi-card blue delay-3">
+<div class="divider" style="margin-top:28px"><span class="divider-label">Desglose</span></div>
+
+<!-- Food/Drinks split -->
+<div class="kpi-grid" style="margin-top:0">
+  <div class="card kpi-card wide terracota delay-4">
     <div class="kpi-label">Drinks Revenue</div>
-    <div class="kpi-value mono" data-count="1302481186" data-prefix="$" data-format="money">0</div>
-    <div class="kpi-delta" style="background:rgba(59,154,255,0.12);color:var(--accent2);">47.7%</div>
+    <div class="kpi-value" data-count="1302481186" data-format="money">0</div>
+    <div class="kpi-delta neutral">47.7% del total</div>
+    <div class="kpi-note">Las bebidas dominan</div>
   </div>
-  <div class="card kpi-card green delay-4">
+  <div class="card kpi-card wide borgona delay-5">
+    <div class="kpi-label">Food Revenue</div>
+    <div class="kpi-value" data-count="991207185" data-format="money">0</div>
+    <div class="kpi-delta neutral">36.3% del total</div>
+  </div>
+  <div class="card kpi-card narrow oliva delay-5">
     <div class="kpi-label">Propinas</div>
-    <div class="kpi-value mono" data-count="248857308" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-value" data-count="248857308" data-format="money" style="font-size:1.6rem">0</div>
     <div class="kpi-delta up">9.1%</div>
   </div>
-  <div class="card kpi-card yellow delay-5">
+  <div class="card kpi-card narrow ambar delay-6">
     <div class="kpi-label">Descuentos</div>
-    <div class="kpi-value mono" data-count="57692665" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-value" data-count="57692665" data-format="money" style="font-size:1.6rem">0</div>
     <div class="kpi-delta down">2.1%</div>
   </div>
 </div>
 
-<!-- Zone Donut + Daily chart -->
-<div class="grid-2">
-  <!-- Zones donut -->
-  <div class="card delay-3">
-    <div class="section-title"><span class="dot"></span>Revenue por Zona</div>
+<div class="divider" style="margin-top:28px"><span class="divider-label">Zonas y Tendencia</span></div>
+
+<!-- Zone + Daily -->
+<div class="grid-2" style="margin-top:0">
+  <div class="card delay-5">
+    <div class="section-title"><span class="accent"></span>Venta Diaria</div>
+    <div id="dailyChart"></div>
+  </div>
+  <div class="card delay-6">
+    <div class="section-title"><span class="accent"></span>Revenue por Zona</div>
     <div class="donut-container">
-      <svg class="donut-svg" viewBox="0 0 200 200" id="zoneDonut"></svg>
+      <svg class="donut-svg" viewBox="0 0 180 180" id="zoneDonut"></svg>
       <div class="donut-legend" id="zoneLegend"></div>
     </div>
   </div>
-  
-  <!-- Daily sales chart -->
-  <div class="card delay-4">
-    <div class="section-title"><span class="dot"></span>Venta Diaria Abril</div>
-    <div class="chart-container" id="dailyChart"></div>
-  </div>
 </div>
 
-<!-- Top Products Table with Cost/Margin -->
+<div class="divider"><span class="divider-label">Top Productos: Revenue vs Costo</span></div>
+
+<!-- Top Products Table -->
 <div class="section">
-  <div class="card delay-5">
-    <div class="section-title"><span class="dot"></span>Top 15 Productos: Revenue vs Costo</div>
-    <div style="overflow-x:auto;">
+  <div class="card delay-6" style="padding:20px">
+    <div style="overflow-x:auto">
       <table class="product-table">
         <thead>
           <tr>
@@ -269,7 +419,7 @@ body {
             <th style="text-align:right">Costo/u</th>
             <th style="text-align:right">Costo Total</th>
             <th style="text-align:right">Margen</th>
-            <th>Margen %</th>
+            <th>Margin %</th>
           </tr>
         </thead>
         <tbody id="productBody"></tbody>
@@ -278,19 +428,24 @@ body {
   </div>
 </div>
 
-<!-- Cost vs Revenue visual bar chart -->
+<div class="divider"><span class="divider-label">Costo vs Margen Visual</span></div>
+
+<!-- Revenue vs Cost stacked -->
 <div class="section">
-  <div class="card delay-6">
-    <div class="section-title"><span class="dot"></span>Revenue vs Costo — Top 10</div>
-    <div id="revenueCostChart"></div>
+  <div class="card delay-7" style="padding:24px">
+    <div id="revCostChart"></div>
   </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  Attick & Keller — Datos desde Supabase POS — Abril 2026
 </div>
 
 </div>
 
 <script>
-// ===== DATA =====
-const TOP_PRODUCTS = [
+const PRODUCTS = [
   {n:"Pizza J. Serrano",q:484,p:61000,r:29524000,cu:19542,ct:9458104,m:20065896,mp:68},
   {n:"Moscow Mule",q:493,p:52000,r:25636000,cu:8336,ct:4109563,m:21526437,mp:84},
   {n:"Mezcalita",q:343,p:56000,r:19208000,cu:14560,ct:4994213,m:14213787,mp:74},
@@ -309,12 +464,12 @@ const TOP_PRODUCTS = [
 ];
 
 const ZONES = [
-  {n:"Tipi",v:62.6,c:"#FF6B35"},
-  {n:"Attic",v:15.3,c:"#3B9AFF"},
-  {n:"Chispas",v:7.0,c:"#22C55E"},
-  {n:"Desconocido",v:10.8,c:"#8888A0"},
-  {n:"Interno",v:2.7,c:"#FBBF24"},
-  {n:"Keller",v:1.7,c:"#A855F7"}
+  {n:"Tipi",v:62.6,c:"#6B2737"},
+  {n:"Attic",v:15.3,c:"#D4922A"},
+  {n:"Chispas",v:7.0,c:"#5C7A4D"},
+  {n:"Sin zona",v:10.8,c:"#C9A94E"},
+  {n:"Interno",v:2.7,c:"#A0522D"},
+  {n:"Keller",v:1.7,c:"#3E2723"}
 ];
 
 const DAILY = [
@@ -330,191 +485,159 @@ const DAILY = [
   ["28/04",32145000],["29/04",112456000],["30/04",118234000]
 ];
 
-// ===== FORMAT HELPERS =====
-function fmtMoney(v) {
+function fmtCOP(v) {
   if (v >= 1e9) return '$' + (v/1e9).toFixed(2) + 'B';
   if (v >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
-  if (v >= 1e3) return '$' + Math.round(v/1e3).toLocaleString('es-CO') + 'K';
-  return '$' + Math.round(v).toLocaleString('es-CO');
+  if (v >= 1e3) return '$' + (v/1e3).toFixed(0) + 'K';
+  return '$' + Math.round(v);
 }
 function fmtNum(v) {
   return new Intl.NumberFormat('es-CO').format(Math.round(v));
 }
 
-// ===== ANIMATED COUNTERS =====
+// Counter animation with spring
 function animateCounters() {
   document.querySelectorAll('[data-count]').forEach(el => {
     const target = parseInt(el.dataset.count);
-    const prefix = el.dataset.prefix || '';
     const suffix = el.dataset.suffix || '';
     const isMoney = el.dataset.format === 'money';
-    const start = performance.now();
-    const dur = 1500;
-    function tick(now) {
-      const t = Math.min((now - start) / dur, 1);
-      const ease = 1 - Math.pow(1 - t, 3);
+    let start = null;
+    const dur = 1600;
+    function step(ts) {
+      if (!start) start = ts;
+      const t = Math.min((ts - start) / dur, 1);
+      // Spring-like ease
+      const ease = 1 - Math.pow(1 - t, 4);
       const cur = Math.round(target * ease);
-      if (isMoney) {
-        el.textContent = fmtMoney(cur);
-      } else {
-        el.textContent = prefix + fmtNum(cur) + suffix;
-      }
-      if (t < 1) requestAnimationFrame(tick);
+      el.textContent = isMoney ? fmtCOP(cur) : fmtNum(cur) + suffix;
+      if (t < 1) requestAnimationFrame(step);
     }
-    requestAnimationFrame(tick);
+    requestAnimationFrame(step);
   });
 }
 
-// ===== ZONE DONUT =====
+// Zone donut
 function drawDonut() {
   const svg = document.getElementById('zoneDonut');
-  const cx = 100, cy = 100, r = 70, lw = 22;
-  const circumference = 2 * Math.PI * r;
-  let offset = 0;
+  const cx=90, cy=90, r=60, lw=18;
+  const C = 2 * Math.PI * r;
+  let off = 0;
   
-  // Center text
-  const centerText = document.createElementNS('http://www.w3.org/2000/svg','text');
-  centerText.setAttribute('x', cx); centerText.setAttribute('y', cy-6);
-  centerText.setAttribute('text-anchor','middle');
-  centerText.style.cssText = 'fill:#F0F0F5;font-size:18px;font-weight:800;font-family:JetBrains Mono,monospace';
-  centerText.textContent = '6 Zonas';
-  svg.appendChild(centerText);
-  const subText = document.createElementNS('http://www.w3.org/2000/svg','text');
-  subText.setAttribute('x', cx); subText.setAttribute('y', cy+14);
-  subText.setAttribute('text-anchor','middle');
-  subText.style.cssText = 'fill:#8888A0;font-size:10px;font-family:Inter,sans-serif';
-  subText.textContent = 'Abril 2026';
-  svg.appendChild(subText);
+  // Center
+  ['6 Zonas','Abril 2026'].forEach((txt, i) => {
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',cx); t.setAttribute('y',cy+(i===0?-4:12));
+    t.setAttribute('text-anchor','middle');
+    t.style.cssText = i===0
+      ? 'fill:#3E2723;font-size:16px;font-weight:800;font-family:Playfair Display,serif'
+      : 'fill:rgba(62,39,35,0.4);font-size:9px;font-family:DM Sans,sans-serif';
+    t.textContent = txt;
+    svg.appendChild(t);
+  });
 
-  // Animate after delay
   setTimeout(() => {
-    ZONES.forEach((zone, i) => {
-      const len = (zone.v / 100) * circumference;
-      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
-      circle.setAttribute('r', r); circle.setAttribute('fill', 'none');
-      circle.setAttribute('stroke', zone.c);
-      circle.setAttribute('stroke-width', lw);
-      circle.setAttribute('stroke-dasharray', `0 ${circumference}`);
-      circle.setAttribute('stroke-dashoffset', -offset);
-      circle.setAttribute('transform', `rotate(-90 ${cx} ${cy})`);
-      svg.appendChild(circle);
-      
-      // Animate
+    ZONES.forEach((z, i) => {
+      const len = (z.v / 100) * C;
+      const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx',cx); c.setAttribute('cy',cy);
+      c.setAttribute('r',r); c.setAttribute('fill','none');
+      c.setAttribute('stroke',z.c); c.setAttribute('stroke-width',lw);
+      c.setAttribute('stroke-dasharray',`0 ${C}`);
+      c.setAttribute('stroke-dashoffset',-off);
+      c.setAttribute('transform',`rotate(-90 ${cx} ${cy})`);
+      svg.appendChild(c);
       setTimeout(() => {
-        circle.style.transition = 'stroke-dasharray 1.2s cubic-bezier(0.25,1,0.5,1)';
-        circle.setAttribute('stroke-dasharray', `${len} ${circumference - len}`);
-      }, i * 120);
-      
-      offset += len;
+        c.style.transition = 'stroke-dasharray 1.2s cubic-bezier(0.23,1,0.32,1)';
+        c.setAttribute('stroke-dasharray',`${len} ${C-len}`);
+      }, i * 130);
+      off += len;
     });
-  }, 400);
+  }, 500);
 
-  // Legend
   const legend = document.getElementById('zoneLegend');
   ZONES.forEach(z => {
     legend.innerHTML += `<div class="legend-item"><span class="legend-dot" style="background:${z.c}"></span>${z.n} ${z.v}%</div>`;
   });
 }
 
-// ===== DAILY CHART =====
+// Daily bars
 function drawDaily() {
-  const container = document.getElementById('dailyChart');
-  const maxVal = Math.max(...DAILY.map(d => d[1]));
-  
+  const cont = document.getElementById('dailyChart');
+  const max = Math.max(...DAILY.map(d=>d[1]));
   DAILY.forEach((d, i) => {
+    const pct = (d[1]/max*100).toFixed(1);
+    const isWE = (i%7===5||i%7===6);
     const row = document.createElement('div');
     row.className = 'bar-row';
-    const pct = (d[1] / maxVal * 100).toFixed(1);
-    const isWeekend = (i % 7 === 5 || i % 7 === 6);
-    const color = isWeekend ? 'rgba(255,107,53,0.3)' : 'linear-gradient(90deg, #FF6B35, #FF9F6B)';
-    
     row.innerHTML = `
-      <div class="bar-day mono">${d[0]}</div>
+      <div class="bar-day">${d[0]}</div>
       <div class="bar-track">
-        <div class="bar-fill" style="background:${isWeekend?'rgba(255,107,53,0.25)':'linear-gradient(90deg,#FF6B35,#FF9F6B)'};width:0" data-width="${pct}%">
-          <span class="bar-val" style="color:${isWeekend?'var(--text2)':'var(--bg)'}">${fmtMoney(d[1])}</span>
+        <div class="bar-fill" style="background:${isWE?'rgba(107,39,55,0.15)':'linear-gradient(90deg,#6B2737,#8B3A4A)'};width:0" data-width="${pct}%">
+          <span class="bar-val" style="color:${isWE?'rgba(62,39,35,0.5)':'#F5EDE0'}">${fmtCOP(d[1])}</span>
         </div>
-      </div>
-    `;
-    container.appendChild(row);
+      </div>`;
+    cont.appendChild(row);
   });
-
-  // Animate bars
   setTimeout(() => {
-    document.querySelectorAll('.bar-fill').forEach((bar, i) => {
-      setTimeout(() => {
-        bar.style.width = bar.dataset.width;
-      }, i * 60);
-    });
-  }, 500);
-}
-
-// ===== PRODUCT TABLE =====
-function buildTable() {
-  const tbody = document.getElementById('productBody');
-  TOP_PRODUCTS.forEach((p, i) => {
-    const marginColor = p.mp >= 80 ? 'var(--green)' : p.mp >= 70 ? 'var(--accent)' : p.mp >= 60 ? 'var(--yellow)' : 'var(--red)';
-    const barW = Math.max(p.mp, 5);
-    tbody.innerHTML += `
-      <tr style="animation:cardIn 0.4s ease-out ${i*50}ms both">
-        <td class="mono" style="color:var(--text2)">${i+1}</td>
-        <td style="font-weight:600">${p.n}</td>
-        <td class="mono" style="text-align:right">${fmtNum(p.q)}</td>
-        <td class="mono" style="text-align:right;font-size:0.78rem">$${fmtNum(p.p)}</td>
-        <td class="mono" style="text-align:right;font-weight:600;color:var(--accent)">${fmtMoney(p.r)}</td>
-        <td class="mono" style="text-align:right;font-size:0.78rem;color:var(--text2)">$${fmtNum(p.cu)}</td>
-        <td class="mono" style="text-align:right;font-size:0.78rem;color:var(--red)">${fmtMoney(p.ct)}</td>
-        <td class="mono" style="text-align:right;color:${marginColor}">${fmtMoney(p.m)}</td>
-        <td><span class="margin-bar" style="width:${barW}%;background:${marginColor}"></span> <span class="mono" style="font-size:0.78rem;color:${marginColor}">${p.mp}%</span></td>
-      </tr>
-    `;
-  });
-}
-
-// ===== REVENUE vs COST CHART =====
-function drawRevCost() {
-  const container = document.getElementById('revenueCostChart');
-  const top10 = TOP_PRODUCTS.slice(0, 10);
-  const maxRev = Math.max(...top10.map(p => p.r));
-  
-  top10.forEach((p, i) => {
-    const revPct = (p.r / maxRev * 100).toFixed(1);
-    const costPct = (p.ct / p.r * 100).toFixed(1);
-    const marginPct = 100 - parseFloat(costPct);
-    const barColor = p.mp >= 80 ? 'var(--green)' : p.mp >= 70 ? 'var(--accent)' : p.mp >= 60 ? 'var(--yellow)' : 'var(--red)';
-    
-    const row = document.createElement('div');
-    row.style.cssText = `margin-bottom:14px;`;
-    row.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:0.82rem;font-weight:600">${p.n}</span>
-        <span class="mono" style="font-size:0.72rem;color:${barColor}">${p.mp}% margen</span>
-      </div>
-      <div style="display:flex;height:24px;border-radius:4px;overflow:hidden">
-        <div style="width:0%;background:var(--accent2);transition:width 1s cubic-bezier(0.25,1,0.5,1) ${i*0.1}s;display:flex;align-items:center;justify-content:center" data-cost-pct="${costPct}%">
-          <span class="mono" style="font-size:0.6rem;color:white;opacity:0.9">Costo</span>
-        </div>
-        <div style="width:0%;background:${barColor};transition:width 1s cubic-bezier(0.25,1,0.5,1) ${i*0.1+0.05}s;display:flex;align-items:center;justify-content:center" data-margin-pct="${marginPct}%">
-          <span class="mono" style="font-size:0.6rem;color:var(--bg);opacity:0.9">Margen</span>
-        </div>
-      </div>
-    `;
-    container.appendChild(row);
-  });
-
-  // Animate
-  setTimeout(() => {
-    document.querySelectorAll('[data-cost-pct]').forEach(el => {
-      el.style.width = el.dataset.costPct;
-    });
-    document.querySelectorAll('[data-margin-pct]').forEach(el => {
-      el.style.width = el.dataset.marginPct;
+    document.querySelectorAll('.bar-fill').forEach((bar,i) => {
+      setTimeout(() => { bar.style.width = bar.dataset.width; }, i * 60);
     });
   }, 600);
 }
 
-// ===== INIT =====
+// Product table
+function buildTable() {
+  const tbody = document.getElementById('productBody');
+  PRODUCTS.forEach((p, i) => {
+    const cls = p.mp>=80?'high':p.mp>=70?'mid':'low';
+    tbody.innerHTML += `
+    <tr style="animation:cardReveal 0.5s cubic-bezier(0.23,1,0.32,1) ${i*50}ms both">
+      <td style="color:rgba(62,39,35,0.3);font-weight:600">${i+1}</td>
+      <td style="font-weight:600">${p.n}</td>
+      <td style="text-align:right;font-weight:500">${fmtNum(p.q)}</td>
+      <td style="text-align:right;font-size:0.8rem">$${fmtNum(p.p)}</td>
+      <td style="text-align:right;font-weight:700;color:var(--borgona)">${fmtCOP(p.r)}</td>
+      <td style="text-align:right;font-size:0.8rem;color:rgba(62,39,35,0.5)">$${fmtNum(p.cu)}</td>
+      <td style="text-align:right;font-size:0.8rem;color:var(--ambar)">${fmtCOP(p.ct)}</td>
+      <td style="text-align:right;font-weight:600;color:var(--oliva)">${fmtCOP(p.m)}</td>
+      <td><span class="margin-pill ${cls}">${p.mp}%</span></td>
+    </tr>`;
+  });
+}
+
+// Revenue vs Cost stacked bars
+function drawRevCost() {
+  const cont = document.getElementById('revCostChart');
+  const top10 = PRODUCTS.slice(0, 10);
+  top10.forEach((p, i) => {
+    const costPct = (p.ct / p.r * 100).toFixed(1);
+    const marginPct = (100 - parseFloat(costPct)).toFixed(1);
+    const cls = p.mp>=80?'high':p.mp>=70?'mid':'low';
+    const marginColor = p.mp>=80?'var(--oliva)':p.mp>=70?'var(--borgona)':'var(--ambar)';
+    
+    const row = document.createElement('div');
+    row.className = 'revcost-bar';
+    row.innerHTML = `
+      <div class="revcost-name">
+        <span>${p.n}</span>
+        <span style="color:${marginColor}">${p.mp}%</span>
+      </div>
+      <div class="revcost-track">
+        <div style="width:0%;background:var(--ambar);transition:width 1s cubic-bezier(0.23,1,0.32,1) ${i*0.08}s;display:flex;align-items:center;justify-content:center" data-cost="${costPct}%">
+          <span style="font-size:0.6rem;font-weight:700;color:#F5EDE0;opacity:0.9">Costo</span>
+        </div>
+        <div style="width:0%;background:${marginColor};transition:width 1s cubic-bezier(0.23,1,0.32,1) ${i*0.08+0.05}s;display:flex;align-items:center;justify-content:center" data-margin="${marginPct}%">
+          <span style="font-size:0.6rem;font-weight:700;color:#F5EDE0;opacity:0.9">Margen</span>
+        </div>
+      </div>`;
+    cont.appendChild(row);
+  });
+  setTimeout(() => {
+    document.querySelectorAll('[data-cost]').forEach(el => el.style.width = el.dataset.cost);
+    document.querySelectorAll('[data-margin]').forEach(el => el.style.width = el.dataset.margin);
+  }, 700);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   animateCounters();
   drawDonut();

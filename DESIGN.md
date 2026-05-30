@@ -1,43 +1,34 @@
-# DESIGN.md — MIRRIS by Attic & Keller Dashboard
+# Attick & Keller — Design
 
-## Brand Identity
-- Brand: MIRRIS by Attic & Keller (A&K)
-- Theme: Dark premium restaurant analytics
-- Accent Color: `#FF6B35` (warm orange — signature A&K)
-- Secondary: `#3B9AFF` (cool blue contrast)
+## Style Prompt
+Rústico Editorial Moderno — a warm, intimate restaurant reservation experience. Mediterranean warmth meets editorial sophistication. Asymmetric layouts with hand-drawn accents. Not corporate, not minimal. Think candlelit bookshop meets craft brewery.
 
-## Color Palette
-- Background: `#0A0A0F`
-- Surface: `#12121A`
-- Surface elevated: `#1A1A26`
-- Border: `#2A2A3A`
-- Text primary: `#F0F0F5`
-- Text secondary: `#8888A0`
-- Accent primary: `#FF6B35`
-- Accent secondary: `#3B9AFF`
-- Success: `#22C55E`
-- Danger: `#EF4444`
-- Warning: `#FBBF24`
+## Colors
+- **Madera** #3E2723 — primary text, deep warm brown
+- **Borgoña** #6B2737 — primary accent (buttons, links, highlights)
+- **Cal** #F5EDE0 — background, warm cream
+- **Oliva** #5C7A4D — secondary accent (success, confirmation)
+- **Ámbar** #D4922A — tertiary accent (dates, highlights)
+- **Negro** #1E1E1E — deep text
+- **Dorado** #C9A94E — luxury accents, borders
+- **Terracota** #A0522D — warm secondary
 
 ## Typography
-- Display: `Inter` (700, 800)
-- Body: `Inter` (400, 500, 600)
-- Monospace: `JetBrains Mono` (for numbers)
+- **Playfair Display** — headings, display text, titles
+- **DM Sans** — body text, UI elements
+- **Caveat** — hand-drawn accents, casual notes
 
-## Shape
-- Border radius: `12px` (cards), `8px` (badges), `50%` (avatars)
-- Border: `1px solid rgba(255,255,255,0.06)`
+## Motion
+- Spring physics (stiffness: 100, damping: 20)
+- Custom easing: cubic-bezier(0.23, 1, 0.32, 1)
+- Stagger reveals: 50-80ms between elements
+- Scale buttons: 0.97 hover, spring back
+- Clip-path image reveals
+- Blur → focus orchestration
 
-## Animation
-- Counters: Animate from 0 to final value over 1.5s (ease-out)
-- Bars: Grow from left 0% to final width over 1s (staggered 100ms)
-- Donut: Animate stroke-dasharray from 0 over 1.2s
-- Cards: Fade in + translateY(20px → 0) over 0.6s (staggered 150ms)
-- Hover: Scale 1.02 + border-glow accent color
-
-## Components
-- KPI Card: Surface bg + left accent bar + value + label + delta badge
-- Bar Chart: Horizontal bars + gradient fill + value label
-- Donut Chart: SVG + center label + legend below
-- Spark Line: Minimal line chart for daily trend
-- Table: Alternating row shading + hover highlight
+## What NOT to Do
+- No pure white backgrounds — always tinted warm (#F5EDE0)
+- No sharp geometric motion — use organic, spring-based
+- No corporate blue/purple gradients
+- No centered symmetry — prefer asymmetric balance
+- No cold/sterile typography — Playfair warmth mandatory
