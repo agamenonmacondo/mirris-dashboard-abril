@@ -334,8 +334,8 @@ const DAILY = [
 function fmtMoney(v) {
   if (v >= 1e9) return '$' + (v/1e9).toFixed(2) + 'B';
   if (v >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
-  if (v >= 1e3) return '$' + (v/1e3).toFixed(0) + 'K';
-  return '$' + v;
+  if (v >= 1e3) return '$' + Math.round(v/1e3).toLocaleString('es-CO') + 'K';
+  return '$' + Math.round(v).toLocaleString('es-CO');
 }
 function fmtNum(v) {
   return new Intl.NumberFormat('es-CO').format(Math.round(v));
@@ -355,7 +355,7 @@ function animateCounters() {
       const ease = 1 - Math.pow(1 - t, 3);
       const cur = Math.round(target * ease);
       if (isMoney) {
-        el.textContent = prefix + fmtMoney(cur);
+        el.textContent = fmtMoney(cur);
       } else {
         el.textContent = prefix + fmtNum(cur) + suffix;
       }
