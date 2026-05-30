@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIRRIS — Performance Abril 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0F;
+  --surface: #12121A;
+  --surface2: #1A1A26;
+  --border: #2A2A3A;
+  --text: #F0F0F5;
+  --text2: #8888A0;
+  --accent: #FF6B35;
+  --accent2: #3B9AFF;
+  --green: #22C55E;
+  --red: #EF4444;
+  --yellow: #FBBF24;
+  --radius: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Animated gradient bg */
+.bg-glow {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: 
+    radial-gradient(ellipse 600px 400px at 20% 10%, rgba(255,107,53,0.08), transparent),
+    radial-gradient(ellipse 500px 300px at 80% 80%, rgba(59,154,255,0.06), transparent);
+  pointer-events: none; z-index: 0;
+  animation: glowPulse 8s ease-in-out infinite alternate;
+}
+@keyframes glowPulse {
+  0% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.container {
+  max-width: 1200px; margin: 0 auto; padding: 24px 20px;
+  position: relative; z-index: 1;
+}
+
+/* Header */
+.header {
+  text-align: center; margin-bottom: 40px;
+  animation: fadeInDown 0.6s ease-out;
+}
+.header h1 {
+  font-size: 2.2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), #FF9F6B);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; letter-spacing: -0.5px;
+}
+.header .subtitle {
+  font-size: 1.1rem; color: var(--text2); margin-top: 6px; font-weight: 400;
+}
+.header .accent-bar {
+  width: 60px; height: 4px; background: var(--accent);
+  border-radius: 2px; margin: 12px auto 0;
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  animation: cardIn 0.6s ease-out both;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,107,53,0.3);
+  box-shadow: 0 8px 30px rgba(255,107,53,0.08);
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px; margin-bottom: 32px;
+}
+.kpi-card {
+  position: relative; overflow: hidden;
+}
+.kpi-card::before {
+  content: ''; position: absolute; left: 0; top: 0;
+  width: 4px; height: 100%; border-radius: 4px 0 0 4px;
+}
+.kpi-card.orange::before { background: var(--accent); }
+.kpi-card.blue::before { background: var(--accent2); }
+.kpi-card.green::before { background: var(--green); }
+.kpi-card.yellow::before { background: var(--yellow); }
+
+.kpi-label { font-size: 0.8rem; color: var(--text2); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding-left: 12px; }
+.kpi-value { font-size: 2rem; font-weight: 800; padding-left: 12px; line-height: 1.1; }
+.kpi-delta { display: inline-flex; align-items: center; gap: 4px; font-size: 0.78rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; margin: 8px 0 0 12px; }
+.kpi-delta.up { background: rgba(34,197,94,0.12); color: var(--green); }
+.kpi-delta.down { background: rgba(239,68,68,0.12); color: var(--red); }
+
+/* Section */
+.section { margin-bottom: 36px; animation: cardIn 0.6s ease-out both; }
+.section-title {
+  font-size: 1.15rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+/* Two column */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* Daily chart */
+.chart-container { position: relative; width: 100%; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.bar-day { width: 40px; font-size: 0.72rem; color: var(--text2); text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; height: 22px; background: var(--surface2); border-radius: 4px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 1.2s cubic-bezier(0.25,1,0.5,1); width: 0; display: flex; align-items: center; }
+.bar-fill .bar-val { font-size: 0.68rem; font-weight: 600; padding: 0 6px; white-space: nowrap; color: var(--bg); }
+
+/* Product table */
+.product-table { width: 100%; border-collapse: collapse; }
+.product-table th {
+  font-size: 0.72rem; color: var(--text2); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border);
+}
+.product-table td {
+  padding: 10px 12px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.product-table tr:hover td { background: rgba(255,107,53,0.04); }
+.margin-bar { display: inline-block; height: 6px; border-radius: 3px; min-width: 20px; }
+
+/* Donut */
+.donut-container { display: flex; flex-direction: column; align-items: center; }
+.donut-svg { width: 200px; height: 200px; }
+.donut-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; justify-content: center; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .kpi-value { font-size: 1.5rem; }
+  .header h1 { font-size: 1.6rem; }
+  .container { padding: 16px 12px; }
+}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <h1>MIRRIS by Attic & Keller</h1>
+  <div class="subtitle">Performance Abril 2026</div>
+  <div class="accent-bar"></div>
+</div>
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+  <div class="card kpi-card orange delay-1">
+    <div class="kpi-label">Clientes</div>
+    <div class="kpi-value mono" data-count="9701">0</div>
+    <div class="kpi-delta up">+32.5% vs Mar</div>
+  </div>
+  <div class="card kpi-card blue delay-2">
+    <div class="kpi-label">Tiquete Promedio</div>
+    <div class="kpi-value mono" data-count="281629" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-delta down">-1.2% vs Mar</div>
+  </div>
+  <div class="card kpi-card green delay-3">
+    <div class="kpi-label">Venta Bruta</div>
+    <div class="kpi-value mono" data-count="2732084472" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-delta up">+13.8% vs Mar</div>
+  </div>
+  <div class="card kpi-card yellow delay-4">
+    <div class="kpi-label">Margen Prom.</div>
+    <div class="kpi-value mono" data-count="74" data-suffix="%">0</div>
+    <div class="kpi-delta up">Saludable</div>
+  </div>
+</div>
+
+<!-- Food vs Drinks split -->
+<div class="kpi-grid">
+  <div class="card kpi-card orange delay-2">
+    <div class="kpi-label">Food Revenue</div>
+    <div class="kpi-value mono" data-count="991207185" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-delta" style="background:rgba(255,107,53,0.12);color:var(--accent);">36.3%</div>
+  </div>
+  <div class="card kpi-card blue delay-3">
+    <div class="kpi-label">Drinks Revenue</div>
+    <div class="kpi-value mono" data-count="1302481186" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-delta" style="background:rgba(59,154,255,0.12);color:var(--accent2);">47.7%</div>
+  </div>
+  <div class="card kpi-card green delay-4">
+    <div class="kpi-label">Propinas</div>
+    <div class="kpi-value mono" data-count="248857308" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-delta up">9.1%</div>
+  </div>
+  <div class="card kpi-card yellow delay-5">
+    <div class="kpi-label">Descuentos</div>
+    <div class="kpi-value mono" data-count="57692665" data-prefix="$" data-format="money">0</div>
+    <div class="kpi-delta down">2.1%</div>
+  </div>
+</div>
+
+<!-- Zone Donut + Daily chart -->
+<div class="grid-2">
+  <!-- Zones donut -->
+  <div class="card delay-3">
+    <div class="section-title"><span class="dot"></span>Revenue por Zona</div>
+    <div class="donut-container">
+      <svg class="donut-svg" viewBox="0 0 200 200" id="zoneDonut"></svg>
+      <div class="donut-legend" id="zoneLegend"></div>
+    </div>
+  </div>
+  
+  <!-- Daily sales chart -->
+  <div class="card delay-4">
+    <div class="section-title"><span class="dot"></span>Venta Diaria Abril</div>
+    <div class="chart-container" id="dailyChart"></div>
+  </div>
+</div>
+
+<!-- Top Products Table with Cost/Margin -->
+<div class="section">
+  <div class="card delay-5">
+    <div class="section-title"><span class="dot"></span>Top 15 Productos: Revenue vs Costo</div>
+    <div style="overflow-x:auto;">
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Producto</th>
+            <th style="text-align:right">Qty</th>
+            <th style="text-align:right">Precio</th>
+            <th style="text-align:right">Revenue</th>
+            <th style="text-align:right">Costo/u</th>
+            <th style="text-align:right">Costo Total</th>
+            <th style="text-align:right">Margen</th>
+            <th>Margen %</th>
+          </tr>
+        </thead>
+        <tbody id="productBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Cost vs Revenue visual bar chart -->
+<div class="section">
+  <div class="card delay-6">
+    <div class="section-title"><span class="dot"></span>Revenue vs Costo — Top 10</div>
+    <div id="revenueCostChart"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ===== DATA =====
+const TOP_PRODUCTS = [
+  {n:"Pizza J. Serrano",q:484,p:61000,r:29524000,cu:19542,ct:9458104,m:20065896,mp:68},
+  {n:"Moscow Mule",q:493,p:52000,r:25636000,cu:8336,ct:4109563,m:21526437,mp:84},
+  {n:"Mezcalita",q:343,p:56000,r:19208000,cu:14560,ct:4994213,m:14213787,mp:74},
+  {n:"Stella Artois",q:988,p:19000,r:18772000,cu:3594,ct:3550665,m:15221335,mp:81},
+  {n:"Club Colombia",q:986,p:17000,r:16762000,cu:2763,ct:2724686,m:14037314,mp:84},
+  {n:"Lomo de Res",q:242,p:66000,r:15972000,cu:22858,ct:5531740,m:10440260,mp:65},
+  {n:"Pizza Hawaiana",q:296,p:49000,r:14504000,cu:16059,ct:4753359,m:9750641,mp:67},
+  {n:"Pizza Pepperoni",q:332,p:42000,r:13944000,cu:7867,ct:2611891,m:11332109,mp:81},
+  {n:"Negroni",q:274,p:49000,r:13426000,cu:10833,ct:2968290,m:10457710,mp:78},
+  {n:"Aperol Spritz",q:237,p:52000,r:12324000,cu:13195,ct:3127196,m:9196804,mp:75},
+  {n:"Burrata",q:249,p:45000,r:11205000,cu:15644,ct:3895275,m:7309725,mp:65},
+  {n:"Sangria Tinta",q:65,p:168000,r:10920000,cu:34193,ct:2222555,m:8697445,mp:80},
+  {n:"Brie al Horno",q:179,p:61000,r:10919000,cu:22543,ct:4035227,m:6883773,mp:63},
+  {n:"Pizza Margarita",q:282,p:37000,r:10434000,cu:5741,ct:1618881,m:8815119,mp:84},
+  {n:"Pulpo Glaseado",q:153,p:63000,r:9639000,cu:17873,ct:2734549,m:6904451,mp:72}
+];
+
+const ZONES = [
+  {n:"Tipi",v:62.6,c:"#FF6B35"},
+  {n:"Attic",v:15.3,c:"#3B9AFF"},
+  {n:"Chispas",v:7.0,c:"#22C55E"},
+  {n:"Desconocido",v:10.8,c:"#8888A0"},
+  {n:"Interno",v:2.7,c:"#FBBF24"},
+  {n:"Keller",v:1.7,c:"#A855F7"}
+];
+
+const DAILY = [
+  ["01/04",96866500],["02/04",93409000],["03/04",98367000],
+  ["04/04",89543000],["05/04",87421000],["06/04",42168000],
+  ["07/04",25293000],["08/04",89764000],["09/04",96215000],
+  ["10/04",98439000],["11/04",98496000],["12/04",91562000],
+  ["13/04",43871000],["14/04",24352000],["15/04",98743000],
+  ["16/04",94328000],["17/04",108942000],["18/04",110287000],
+  ["19/04",108432000],["20/04",51264000],["21/04",28456000],
+  ["22/04",102431000],["23/04",109842000],["24/04",114321000],
+  ["25/04",108765000],["26/04",106543000],["27/04",55432000],
+  ["28/04",32145000],["29/04",112456000],["30/04",118234000]
+];
+
+// ===== FORMAT HELPERS =====
+function fmtMoney(v) {
+  if (v >= 1e9) return '$' + (v/1e9).toFixed(2) + 'B';
+  if (v >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
+  if (v >= 1e3) return '$' + (v/1e3).toFixed(0) + 'K';
+  return '$' + v;
+}
+function fmtNum(v) {
+  return new Intl.NumberFormat('es-CO').format(Math.round(v));
+}
+
+// ===== ANIMATED COUNTERS =====
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const isMoney = el.dataset.format === 'money';
+    const start = performance.now();
+    const dur = 1500;
+    function tick(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const cur = Math.round(target * ease);
+      if (isMoney) {
+        el.textContent = prefix + fmtMoney(cur);
+      } else {
+        el.textContent = prefix + fmtNum(cur) + suffix;
+      }
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// ===== ZONE DONUT =====
+function drawDonut() {
+  const svg = document.getElementById('zoneDonut');
+  const cx = 100, cy = 100, r = 70, lw = 22;
+  const circumference = 2 * Math.PI * r;
+  let offset = 0;
+  
+  // Center text
+  const centerText = document.createElementNS('http://www.w3.org/2000/svg','text');
+  centerText.setAttribute('x', cx); centerText.setAttribute('y', cy-6);
+  centerText.setAttribute('text-anchor','middle');
+  centerText.style.cssText = 'fill:#F0F0F5;font-size:18px;font-weight:800;font-family:JetBrains Mono,monospace';
+  centerText.textContent = '6 Zonas';
+  svg.appendChild(centerText);
+  const subText = document.createElementNS('http://www.w3.org/2000/svg','text');
+  subText.setAttribute('x', cx); subText.setAttribute('y', cy+14);
+  subText.setAttribute('text-anchor','middle');
+  subText.style.cssText = 'fill:#8888A0;font-size:10px;font-family:Inter,sans-serif';
+  subText.textContent = 'Abril 2026';
+  svg.appendChild(subText);
+
+  // Animate after delay
+  setTimeout(() => {
+    ZONES.forEach((zone, i) => {
+      const len = (zone.v / 100) * circumference;
+      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx', cx); circle.setAttribute('cy', cy);
+      circle.setAttribute('r', r); circle.setAttribute('fill', 'none');
+      circle.setAttribute('stroke', zone.c);
+      circle.setAttribute('stroke-width', lw);
+      circle.setAttribute('stroke-dasharray', `0 ${circumference}`);
+      circle.setAttribute('stroke-dashoffset', -offset);
+      circle.setAttribute('transform', `rotate(-90 ${cx} ${cy})`);
+      svg.appendChild(circle);
+      
+      // Animate
+      setTimeout(() => {
+        circle.style.transition = 'stroke-dasharray 1.2s cubic-bezier(0.25,1,0.5,1)';
+        circle.setAttribute('stroke-dasharray', `${len} ${circumference - len}`);
+      }, i * 120);
+      
+      offset += len;
+    });
+  }, 400);
+
+  // Legend
+  const legend = document.getElementById('zoneLegend');
+  ZONES.forEach(z => {
+    legend.innerHTML += `<div class="legend-item"><span class="legend-dot" style="background:${z.c}"></span>${z.n} ${z.v}%</div>`;
+  });
+}
+
+// ===== DAILY CHART =====
+function drawDaily() {
+  const container = document.getElementById('dailyChart');
+  const maxVal = Math.max(...DAILY.map(d => d[1]));
+  
+  DAILY.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    const pct = (d[1] / maxVal * 100).toFixed(1);
+    const isWeekend = (i % 7 === 5 || i % 7 === 6);
+    const color = isWeekend ? 'rgba(255,107,53,0.3)' : 'linear-gradient(90deg, #FF6B35, #FF9F6B)';
+    
+    row.innerHTML = `
+      <div class="bar-day mono">${d[0]}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="background:${isWeekend?'rgba(255,107,53,0.25)':'linear-gradient(90deg,#FF6B35,#FF9F6B)'};width:0" data-width="${pct}%">
+          <span class="bar-val" style="color:${isWeekend?'var(--text2)':'var(--bg)'}">${fmtMoney(d[1])}</span>
+        </div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach((bar, i) => {
+      setTimeout(() => {
+        bar.style.width = bar.dataset.width;
+      }, i * 60);
+    });
+  }, 500);
+}
+
+// ===== PRODUCT TABLE =====
+function buildTable() {
+  const tbody = document.getElementById('productBody');
+  TOP_PRODUCTS.forEach((p, i) => {
+    const marginColor = p.mp >= 80 ? 'var(--green)' : p.mp >= 70 ? 'var(--accent)' : p.mp >= 60 ? 'var(--yellow)' : 'var(--red)';
+    const barW = Math.max(p.mp, 5);
+    tbody.innerHTML += `
+      <tr style="animation:cardIn 0.4s ease-out ${i*50}ms both">
+        <td class="mono" style="color:var(--text2)">${i+1}</td>
+        <td style="font-weight:600">${p.n}</td>
+        <td class="mono" style="text-align:right">${fmtNum(p.q)}</td>
+        <td class="mono" style="text-align:right;font-size:0.78rem">$${fmtNum(p.p)}</td>
+        <td class="mono" style="text-align:right;font-weight:600;color:var(--accent)">${fmtMoney(p.r)}</td>
+        <td class="mono" style="text-align:right;font-size:0.78rem;color:var(--text2)">$${fmtNum(p.cu)}</td>
+        <td class="mono" style="text-align:right;font-size:0.78rem;color:var(--red)">${fmtMoney(p.ct)}</td>
+        <td class="mono" style="text-align:right;color:${marginColor}">${fmtMoney(p.m)}</td>
+        <td><span class="margin-bar" style="width:${barW}%;background:${marginColor}"></span> <span class="mono" style="font-size:0.78rem;color:${marginColor}">${p.mp}%</span></td>
+      </tr>
+    `;
+  });
+}
+
+// ===== REVENUE vs COST CHART =====
+function drawRevCost() {
+  const container = document.getElementById('revenueCostChart');
+  const top10 = TOP_PRODUCTS.slice(0, 10);
+  const maxRev = Math.max(...top10.map(p => p.r));
+  
+  top10.forEach((p, i) => {
+    const revPct = (p.r / maxRev * 100).toFixed(1);
+    const costPct = (p.ct / p.r * 100).toFixed(1);
+    const marginPct = 100 - parseFloat(costPct);
+    const barColor = p.mp >= 80 ? 'var(--green)' : p.mp >= 70 ? 'var(--accent)' : p.mp >= 60 ? 'var(--yellow)' : 'var(--red)';
+    
+    const row = document.createElement('div');
+    row.style.cssText = `margin-bottom:14px;`;
+    row.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span style="font-size:0.82rem;font-weight:600">${p.n}</span>
+        <span class="mono" style="font-size:0.72rem;color:${barColor}">${p.mp}% margen</span>
+      </div>
+      <div style="display:flex;height:24px;border-radius:4px;overflow:hidden">
+        <div style="width:0%;background:var(--accent2);transition:width 1s cubic-bezier(0.25,1,0.5,1) ${i*0.1}s;display:flex;align-items:center;justify-content:center" data-cost-pct="${costPct}%">
+          <span class="mono" style="font-size:0.6rem;color:white;opacity:0.9">Costo</span>
+        </div>
+        <div style="width:0%;background:${barColor};transition:width 1s cubic-bezier(0.25,1,0.5,1) ${i*0.1+0.05}s;display:flex;align-items:center;justify-content:center" data-margin-pct="${marginPct}%">
+          <span class="mono" style="font-size:0.6rem;color:var(--bg);opacity:0.9">Margen</span>
+        </div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+
+  // Animate
+  setTimeout(() => {
+    document.querySelectorAll('[data-cost-pct]').forEach(el => {
+      el.style.width = el.dataset.costPct;
+    });
+    document.querySelectorAll('[data-margin-pct]').forEach(el => {
+      el.style.width = el.dataset.marginPct;
+    });
+  }, 600);
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  animateCounters();
+  drawDonut();
+  drawDaily();
+  buildTable();
+  drawRevCost();
+});
+</script>
+</body>
+</html>
